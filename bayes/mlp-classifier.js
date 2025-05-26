@@ -1,4 +1,8 @@
-//Esta función predice la clase de un nuevo punto basado en un modelo de Naive Bayes
+/*  Esta función predice la clase de un nuevo punto basado en un modelo de Naive Bayes, se usan solo los casos 1, 4, 6, 8, 14 y 16 de la tabla.
+    En el html solo se debe de jalar este mlp-classifier.js, en vez del otro mlp-classifier-completo.js
+    que usa todos los casos del CSV.
+*/
+
 async function predict_point() {
     const { GaussianNB, LabelEncoder } = await import('https://luisespino.github.io/mlearnjs/mlearn.mjs');
 

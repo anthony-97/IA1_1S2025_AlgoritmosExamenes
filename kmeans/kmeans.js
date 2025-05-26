@@ -1,3 +1,8 @@
+/*
+    Este algoritmo de KMeans da las predicciones de los casos 1, 4, 6, 8, 14 y 16 de la tabla
+    ademas muestra los centroides de los clusters. En este caso se utilizan 3 clusters, pero solo se cambia el numero
+    en la linea 22 -> const model = new myKMeans(3, 300, 1e-4, 0); //3 clusters,
+*/
 async function fit_predict() {
     const { KMeans } = await import('https://luisespino.github.io/mlearnjs/mlearn.mjs');
 
@@ -14,7 +19,7 @@ async function fit_predict() {
     showTable(X);
 
     const myKMeans = await KMeans();
-    const model = new myKMeans(3, 300, 1e-4, 0); //3 clusters, tolerancia de 1e-4, distancia euclidiana
+    const model = new myKMeans(2, 300, 1e-4, 0); //3 clusters, tolerancia de 1e-4, distancia euclidiana
 
     model.fit(X);
 
@@ -61,7 +66,7 @@ async function fit_predict() {
     }
   }
 
-  function showTable(table) {
+function showTable(table) {
     let container = document.getElementById('table-container');
     let tableElement = document.createElement('table');
     tableElement.border = '1';
@@ -80,6 +85,6 @@ async function fit_predict() {
       });
     });
     container.appendChild(tableElement);
-  }
+}
 
-  fit_predict();
+fit_predict();
