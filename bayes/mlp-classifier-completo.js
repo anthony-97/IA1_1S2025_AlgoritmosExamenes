@@ -4,54 +4,53 @@
 */
 
 async function bayes_from_csv(csvText) {
-  const { GaussianNB, LabelEncoder } = await import('https://luisespino.github.io/mlearnjs/mlearn.mjs');
+    const { GaussianNB, LabelEncoder } = await import('https://luisespino.github.io/mlearnjs/mlearn.mjs');
 
-  // Parsear CSV simple (sin librerías)
-  const lines = csvText.trim().split('\n');
-  const header = lines[0].split(',');
+    //Se parsea el CSV
+    const lines = csvText.trim().split('\n');
+    const header = lines[0].split(',');
 
-  // Índices de columnas que queremos
-  const idxDistancia = header.indexOf('DISTANCIA');
-  const idxGanancia = header.indexOf('GANANCIA');
-  const idxCosto = header.indexOf('COSTO');
-  const idxClase = header.indexOf('CLASE');
+    //Indices de las columnas
+    const idxDistancia = header.indexOf('DISTANCIA');
+    const idxGanancia = header.indexOf('GANANCIA');
+    const idxCosto = header.indexOf('COSTO');
+    const idxClase = header.indexOf('CLASE');
 
-  // Extraer datos
-  const distancia = [];
-  const ganancia = [];
-  const costo = [];
-  const clase = [];
+    const distancia = [];
+    const ganancia = [];
+    const costo = [];
+    const clase = [];
 
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(',');
-    distancia.push(Number(cols[idxDistancia]));
-    ganancia.push(Number(cols[idxGanancia]));
-    costo.push(Number(cols[idxCosto]));
-    clase.push(cols[idxClase]);
-  }
+    for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',');
+        distancia.push(Number(cols[idxDistancia]));
+        ganancia.push(Number(cols[idxGanancia]));
+        costo.push(Number(cols[idxCosto]));
+        clase.push(cols[idxClase]);
+    }
 
-  // Codificar clases
-  const encoder = new (await LabelEncoder)();
-  encoder.fit(clase);
-  const y = encoder.transform(clase);
+    //Codificando clases
+    const encoder = new (await LabelEncoder)();
+    encoder.fit(clase);
+    const y = encoder.transform(clase);
 
-  // Construir matriz de características
-  const X = distancia.map((_, i) => [distancia[i], ganancia[i], costo[i]]);
+    //Se construye la matriz de características
+    const X = distancia.map((_, i) => [distancia[i], ganancia[i], costo[i]]);
 
-  // Entrenar modelo
-  const model = new (await GaussianNB)();
-  model.fit(X, y);
+    //Se entrena el modelo
+    const model = new (await GaussianNB)();
+    model.fit(X, y);
 
-  // Nuevo punto a predecir
-  const newPoint = [5, 1, 10];
-  const predCod = model.predict(newPoint);
-  const predClass = encoder.inverseTransform(predCod)[0];
+    //Punto a predecir
+    const newPoint = [5, 1, 10];
+    const predCod = model.predict(newPoint);
+    const predClass = encoder.inverseTransform(predCod)[0];
 
-  console.log('Clase predicha para [5,1,10]:', predClass);
-  return predClass;
+    console.log('Clase predicha para [5,1,10]:', predClass);
+    return predClass;
 }
 
-// Ejemplo con el CSV dado como string
+//CSV como string
 const csvData = `CASO,ORIGEN,DESTINO,DISTANCIA,HEURISTICA,GANANCIA,COSTO,CLASE
 1,A,B,3,4,5,3,N
 2,A,C,4,3,4,3,P
